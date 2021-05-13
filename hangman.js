@@ -165,3 +165,18 @@ function customWords(){
             document.getElementById("Main").innerHTML = "";
     }
 }
+
+function setLivesUp(){
+    if(state == "NewGame" || state == "AddWords"){
+        maxLives++;
+        lives = maxLives;
+        document.getElementById("lives").innerHTML = "Lives: " + lives;
+    }
+}
+function setLivesDown(){
+    if(state == "NewGame" || state == "AddWords"){
+        maxLives = Math.max(maxLives - 1, 1);
+        lives = maxLives;
+        document.getElementById("lives").innerHTML = "Lives: " + lives;
+    }
+}
