@@ -4,6 +4,7 @@ let oldGuess = "";
 let lives = 0;
 let maxLives = 7;
 let state = "NewGame"
+let previousGuesses = [];
 
 let standardWords = [
     "souple",
@@ -31,8 +32,13 @@ let words = [
 ];
 
 function formSubmit(){
+    if (state == "NewGame"){
+        document.form.reset();
+        return false;
+    }
     var data = Object.fromEntries(new FormData(document.querySelector("form")).entries());
-    document.getElementById("Main").innerHTML = data.inputField;
+    previousGuesses.push(data.inputField.toLowerCase().trim());
+    document.getElementById("Main").innerHTML = previousGuesses;
     console.log(data)
     document.form.reset();
     if(state == "AddWords"){
@@ -85,6 +91,7 @@ function formSubmit(){
                 document.getElementById("winText").innerHTML = "You Lose...";
                 document.getElementById("bestGuess").innerHTML = word;
                 document.getElementById("Main").innerHTML = bestGuess.split("").join(" ");
+                state = "NewGame";
                 return false;
             }
             return false;
@@ -123,6 +130,7 @@ function newGame(){
     lives = maxLives;
     document.getElementById("lives").innerHTML = "Lives: " + lives;
     console.log(word);
+    previousGuesses = [];
 }
 
 function formatOutput(){
@@ -133,11 +141,11 @@ function formatOutput(){
 function addWord(wta){
     if(words[1] == standardWords[1]){
         words = [];
-        words.push(wta);
+        words.push(wta.toLowerCase().trim());
         document.getElementById("bestGuess").innerHTML = words;
     }
     else{
-        words.push(wta);
+        words.push(wta.toLowerCase().trim());
         document.getElementById("bestGuess").innerHTML = words;
     }
 }
