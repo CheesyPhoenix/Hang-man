@@ -3,8 +3,21 @@ let bestGuess = "";
 let oldGuess = "";
 let lives = 0;
 let maxLives = 7;
+let state = "NewGame"
 
-const words = [
+let standardWords = [
+    "souple",
+    "hybridized",
+    "crosstringed",
+    "diurnally",
+    "firm",
+    "jillaroo",
+    "wandlike",
+    "epoch",
+    "triggerfish",
+    "conspirator"
+];
+let words = [
     "souple",
     "hybridized",
     "crosstringed",
@@ -22,6 +35,10 @@ function formSubmit(){
     document.getElementById("Main").innerHTML = data.inputField;
     console.log(data)
     document.form.reset();
+    if(state == "AddWords"){
+        addWord(data.inputField);
+        return false;
+    }
 
     var guess = data.inputField
     guess = guess.toLowerCase().trim();
@@ -56,6 +73,7 @@ function formSubmit(){
                 document.getElementById("winText").innerHTML = "You Win!!!";
                 document.getElementById("bestGuess").innerHTML = word;
                 document.getElementById("Main").innerHTML = "";
+                state = "NewGame";
                 return false;
             }
         }
@@ -76,6 +94,7 @@ function formSubmit(){
         document.getElementById("winText").innerHTML = "You Win!!!";
         document.getElementById("bestGuess").innerHTML = word;
         document.getElementById("Main").innerHTML = "";
+        state = "NewGame";
         return false;
     }
     else{
@@ -91,6 +110,10 @@ function formSubmit(){
 }
 
 function newGame(){
+    state = "InGame";
+    document.getElementById("winText").innerHTML = "";
+    document.getElementById("bestGuess").innerHTML = "";
+    document.getElementById("Main").innerHTML = "";
     word = words[Math.floor(Math.random() * words.length)];
     bestGuess = "";
     for(i = 0; i < word.length; i++){
@@ -107,3 +130,30 @@ function formatOutput(){
 }
 
 
+function addWord(wta){
+    if(words[1] == standardWords[1]){
+        words = [];
+        words.push(wta);
+        document.getElementById("bestGuess").innerHTML = words;
+    }
+    else{
+        words.push(wta);
+        document.getElementById("bestGuess").innerHTML = words;
+    }
+}
+
+function undo(){
+    if(state == "AddWords"){
+        words.pop();
+        document.getElementById("bestGuess").innerHTML = words;
+    }
+}
+
+function customWords(){
+    if (state == "NewGame"){
+            state = "AddWords";
+            document.getElementById("winText").innerHTML = "Enter new words";
+            document.getElementById("bestGuess").innerHTML = words;
+            document.getElementById("Main").innerHTML = "";
+    }
+}
